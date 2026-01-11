@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lakmē Salon - Customer Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: #1a1a1a;
+            padding: 20px;
+            color: #e8e8e8;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: #000000;
+            padding: 30px 40px;
+            border-radius: 0px;
+            margin-bottom: 25px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            border: 2px solid #d4af37;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 8px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+        
+        .header p {
+            color: #d4af37;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background: #000000;
+            padding: 24px;
+            border-radius: 0px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border: 1px solid #333333;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            border-color: #d4af37;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);
+        }
+        
+        .stat-label {
+            color: #999999;
+            font-size: 11px;
+            margin-bottom: 10px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 300;
+            color: #d4af37;
+            letter-spacing: 1px;
+        }
+        
+        .form-section {
+            background: #000000;
+            padding: 35px;
+            border-radius: 0px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border: 1px solid #333333;
+            margin-bottom: 25px;
+        }
+        
+        .form-section h2 {
+            margin-bottom: 25px;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 300;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #d4af37;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: #cccccc;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #333333;
+            border-radius: 0px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #1a1a1a;
+            transition: all 0.3s;
+            color: #e8e8e8;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+            background: #222222;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 25px;
+            padding: 10px 0;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-weight: 400;
+            color: #cccccc;
+        }
+        
+        input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #d4af37;
+        }
+        
+        .service-add-section {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 0px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border: 1px solid #333333;
+        }
+        
+        .service-add-section input {
+            flex: 1;
+            padding: 10px 12px;
+            background: #000000;
+            border: 1px solid #444444;
+        }
+        
+        .btn-add-service {
+            padding: 10px 20px;
+            background: #d4af37;
+            color: #000000;
+            border: none;
+            border-radius: 0px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .btn-add-service:hover {
+            background: #f0c74d;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 0px;
+            cursor: pointer;
+            border: 1px solid #333333;
+            background: #1a1a1a;
+            transition: all 0.3s;
+        }
+        
+        .service-item:hover {
+            border-color: #555555;
+            background: #222222;
+        }
+        
+        .service-item.selected {
+            background: #1a1410;
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+        }
+        
+        .service-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #d4af37;
+        }
+        
+        .service-item label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+            color: #e8e8e8;
+        }
+        
+        .remove-service {
+            background: none;
+            border: none;
+            color: #d4af37;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0 5px;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+        
+        .remove-service:hover {
+            opacity: 1;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: #d4af37;
+            color: #000000;
+            border: none;
+            border-radius: 0px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .btn-primary:hover {
+            background: #f0c74d;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+        
+        .entries-section {
+            background: #000000;
+            padding: 35px;
+            border-radius: 0px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            border: 1px solid #333333;
+            margin-bottom: 25px;
+        }
+        
+        .entries-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #d4af37;
+        }
+        
+        .entries-header h2 {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .btn-export {
+            padding: 10px 20px;
+            background: #d4af37;
+            color: #000000;
+            border: none;
+            border-radius: 0px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .btn-export:hover:not(:disabled) {
+            background: #f0c74d;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn-export:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a1a1a;
+        }
+        
+        th {
+            background: #0a0a0a;
+            color: #d4af37;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 500;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d4af37;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        th:hover {
+            background: #151515;
+        }
+        
+        .filter-icon {
+            margin-left: 8px;
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        
+        .filter-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 0px;
+            padding: 10px;
+            min-width: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            display: none;
+        }
+        
+        .filter-dropdown.show {
+            display: block;
+        }
+        
+        .filter-search {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 10px;
+            background: #0a0a0a;
+            border: 1px solid #333333;
+            color: #e8e8e8;
+            font-size: 13px;
+        }
+        
+        .filter-search:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+        
+        .filter-options-container {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .filter-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            color: #cccccc;
+            border-bottom: 1px solid #2a2a2a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        
+        .filter-option:last-child {
+            border-bottom: none;
+        }
+        
+        .filter-option:hover {
+            background: #222222;
+            color: #d4af37;
+        }
+        
+        .filter-option input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #d4af37;
+        }
+        
+        .filter-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #2a2a2a;
+        }
+        
+        .filter-btn {
+            flex: 1;
+            padding: 6px 12px;
+            border: 1px solid #333333;
+            background: #0a0a0a;
+            color: #d4af37;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn:hover {
+            background: #d4af37;
+            color: #000000;
+        }
+        
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #2a2a2a;
+            color: #cccccc;
+            font-size: 14px;
+        }
+        
+        tr:hover {
+            background: #222222;
+        }
+        
+        .served-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #1a3a1a;
+            color: #4ade80;
+            border-radius: 0px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid #2a5a2a;
+        }
+        
+        .query-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #3a2a1a;
+            color: #fbbf24;
+            border-radius: 0px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid #5a4a2a;
+        }
+        
+        .btn-delete {
+            padding: 6px 12px;
+            background: #3a1a1a;
+            color: #ef4444;
+            border: 1px solid #5a2a2a;
+            border-radius: 0px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-delete:hover {
+            background: #5a2a2a;
+            border-color: #ef4444;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666666;
+            font-size: 15px;
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1a3a1a;
+            color: #4ade80;
+            padding: 16px 24px;
+            border-radius: 0px;
+            border: 1px solid #2a5a2a;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .success-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .note {
+            text-align: center;
+            color: #666666;
+            font-size: 13px;
+            padding: 20px;
+            background: #0a0a0a;
+            border-radius: 0px;
+            border: 1px solid #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Lakmē Salon</h1>
+            <p>Customer Tracking System</p>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="success-message">
+            ✓ Customer entry added successfully!
+        </div>
+
+        <!-- Stats Dashboard -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-label">Today's Total</div>
+                <div class="stat-value" id="todayTotalCustomers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today's Served</div>
+                <div class="stat-value" id="todayServedCustomers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today's Revenue</div>
+                <div class="stat-value" id="todayRevenue">₹0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Customers</div>
+                <div class="stat-value" id="totalCustomers">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Served</div>
+                <div class="stat-value" id="totalServedCustomers">0</div>
+            </div>
+        </div>
+
+        <!-- Entry Form -->
+        <div class="form-section">
+            <h2>Add New Customer</h2>
+            <form id="customerForm">
+                <div class="form-group">
+                    <label>Customer Name *</label>
+                    <input type="text" id="customerName" placeholder="Enter customer name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contact Number *</label>
+                    <input type="tel" id="contactNumber" placeholder="Enter 10-digit number" maxlength="10" pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Male" required>
+                            <span>Male</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Female">
+                            <span>Female</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="Other">
+                            <span>Other</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>How did they find us? *</label>
+                    <select id="source" required>
+                        <option value="">Select source...</option>
+                        <option value="Google Search">Google Search</option>
+                        <option value="Walk-in">Walk-in</option>
+                        <option value="Friend/Family Referral">Friend/Family Referral</option>
+                        <option value="Instagram/Facebook">Instagram/Facebook</option>
+                        <option value="Existing Lakme Customer">Existing Lakme Customer</option>
+                        <option value="Flyer/Pamphlet">Flyer/Pamphlet</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="otherSourceGroup" style="display: none;">
+                    <label>Please specify *</label>
+                    <input type="text" id="otherSource" placeholder="Enter source details">
+                </div>
+
+                <div class="form-group">
+                    <label>Did they take a service? *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="tookService" value="yes" id="tookServiceYes" required>
+                            <span>Yes</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="tookService" value="no" id="tookServiceNo">
+                            <span>No (Just Query)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="entryTypeSection" style="display: none;">
+                    <label>Entry Type *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="entryType" value="Manual" id="entryManual">
+                            <span>Manual</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="entryType" value="Zenoti" id="entryZenoti">
+                            <span>Zenoti</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="paymentMethodSection" style="display: none;">
+                    <label>Payment Method *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="Cash" id="paymentCash">
+                            <span>Cash</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="Other" id="paymentOther">
+                            <span>Other</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="paymentMethod" value="Coupon" id="paymentCoupon">
+                            <span>Coupon</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="servicesSection" style="display: none;">
+                    <label>Services Taken *</label>
+                    <div class="service-add-section">
+                        <input type="text" id="newServiceInput" placeholder="Add new service...">
+                        <button type="button" id="addServiceBtn" class="btn-add-service">+ Add Service</button>
+                    </div>
+                    <div class="services-grid" id="servicesGrid"></div>
+                </div>
+
+                <div class="form-group" id="querySection" style="display: none;">
+                    <label>Query Details *</label>
+                    <textarea id="queryDetails" rows="3" placeholder="What did they inquire about?"></textarea>
+                </div>
+
+                <div class="form-group" id="amountSection" style="display: none;">
+                    <label>Amount Paid (₹) *</label>
+                    <input type="number" id="amount" placeholder="Enter amount" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Locality</label>
+                    <input type="text" id="locality" placeholder="Enter locality (optional)">
+                </div>
+
+                <button type="submit" class="btn-primary">Add Customer Entry</button>
+            </form>
+        </div>
+
+        <!-- Entries List -->
+        <div class="entries-section">
+            <div class="entries-header">
+                <h2>Customer Entries (<span id="entriesCount">0</span>)</h2>
+                <button id="exportBtn" class="btn-export" disabled>
+                    📥 Export CSV
+                </button>
+            </div>
+
+            <div id="entriesTable"></div>
+        </div>
+
+        <!-- Note -->
+        <div class="note">
+            <strong>Note:</strong> All data is stored locally in this browser and synced to Google Sheets. Export CSV regularly for additional backup.
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const ENABLE_GOOGLE_SHEETS = true;
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyoipduyKw_3-tLtl3xsE0JYX7hUjIbF5oFaK34Oa_C3t3NJkE0QIxPvjHmeW_4p8m4/exec';
+
+        // ============================================
+        // DATA MANAGEMENT
+        // ============================================
+        let entries = JSON.parse(localStorage.getItem('salonEntries') || '[]');
+        let customServices = JSON.parse(localStorage.getItem('customServices') || '[]');
+        let activeFilters = {}; // Store active filters for each column
+        let filteredEntries = []; // Store filtered results
+        
+        const defaultServices = [
+            'Haircut',
+            'Hair Color',
+            'Hair Spa',
+            'Facial',
+            'Cleanup',
+            'Waxing',
+            'Threading',
+            'Manicure',
+            'Pedicure',
+            'Makeup',
+            'Bridal Makeup',
+            'Rebonding',
+            'Smoothening',
+            'Keratin Treatment',
+            'Hair Extensions',
+            'Nail Art',
+            'Bleach',
+            'Detan',
+            'Head Massage'
+        ];
+        
+        let allServices = [...defaultServices, ...customServices];
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderServices();
+            updateStats();
+            renderEntries();
+            
+            // Source dropdown handler
+            document.getElementById('source').addEventListener('change', function() {
+                const otherGroup = document.getElementById('otherSourceGroup');
+                otherGroup.style.display = this.value === 'Other' ? 'block' : 'none';
+            });
+            
+            // Service/Query toggle
+            document.querySelectorAll('input[name="tookService"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const servicesSection = document.getElementById('servicesSection');
+                    const querySection = document.getElementById('querySection');
+                    const amountSection = document.getElementById('amountSection');
+                    const entryTypeSection = document.getElementById('entryTypeSection');
+                    const paymentMethodSection = document.getElementById('paymentMethodSection');
+                    
+                    if (this.value === 'yes') {
+                        servicesSection.style.display = 'block';
+                        amountSection.style.display = 'block';
+                        entryTypeSection.style.display = 'block';
+                        paymentMethodSection.style.display = 'block';
+                        querySection.style.display = 'none';
+                    } else {
+                        servicesSection.style.display = 'none';
+                        amountSection.style.display = 'none';
+                        entryTypeSection.style.display = 'none';
+                        paymentMethodSection.style.display = 'none';
+                        querySection.style.display = 'block';
+                    }
+                });
+            });
+        });
+
+        // Render services grid
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+            
+            allServices.forEach(service => {
+                const div = document.createElement('div');
+                div.className = 'service-item';
+                
+                const isCustom = customServices.includes(service);
+                
+                div.innerHTML = `
+                    <input type="checkbox" name="service" value="${service}" id="service_${service.replace(/\s+/g, '_')}">
+                    <label for="service_${service.replace(/\s+/g, '_')}">${service}</label>
+                    ${isCustom ? `<button type="button" class="remove-service" onclick="removeService('${service}')">×</button>` : ''}
+                `;
+                
+                grid.appendChild(div);
+                
+                const checkbox = div.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        div.classList.add('selected');
+                    } else {
+                        div.classList.remove('selected');
+                    }
+                });
+            });
+        }
+        
+        // Add custom service
+        document.getElementById('addServiceBtn').addEventListener('click', function() {
+            const input = document.getElementById('newServiceInput');
+            const newService = input.value.trim();
+            
+            if (!newService) {
+                alert('Please enter a service name');
+                return;
+            }
+            
+            if (allServices.includes(newService)) {
+                alert('This service already exists');
+                return;
+            }
+            
+            customServices.push(newService);
+            allServices.push(newService);
+            localStorage.setItem('customServices', JSON.stringify(customServices));
+            
+            input.value = '';
+            renderServices();
+        });
+        
+        // Remove custom service
+        function removeService(serviceName) {
+            if (confirm(`Remove "${serviceName}" from the list?`)) {
+                customServices = customServices.filter(s => s !== serviceName);
+                allServices = [...defaultServices, ...customServices];
+                localStorage.setItem('customServices', JSON.stringify(customServices));
+                renderServices();
+            }
+        }
+        
+        // Send data to Google Sheets
+        async function sendToGoogleSheets(entry) {
+            if (!ENABLE_GOOGLE_SHEETS) {
+                return { success: false, message: 'Google Sheets sync is disabled' };
+            }
+            
+            if (GOOGLE_SHEETS_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
+                console.warn('Google Sheets URL not configured');
+                return { success: false, message: 'Google Sheets URL not configured' };
+            }
+            
+            try {
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(entry)
+                });
+                
+                return { success: true, message: 'Data synced to Google Sheets' };
+            } catch (error) {
+                console.error('Google Sheets sync error:', error);
+                return { success: false, message: error.message };
+            }
+        }
+
+        // Form submission
+        document.getElementById('customerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('customerName').value.trim();
+            const contact = document.getElementById('contactNumber').value.trim();
+            const gender = document.querySelector('input[name="gender"]:checked')?.value;
+            let source = document.getElementById('source').value;
+            const tookService = document.querySelector('input[name="tookService"]:checked')?.value;
+            const locality = document.getElementById('locality').value.trim();
+            
+            if (source === 'Other') {
+                const otherSource = document.getElementById('otherSource').value.trim();
+                if (!otherSource) {
+                    alert('Please specify the source');
+                    return;
+                }
+                source = `Other: ${otherSource}`;
+            }
+            
+            if (!name || !contact || !gender || !source || !tookService) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            let services = [];
+            let query = '';
+            let amount = 0;
+            let entryType = '';
+            let paymentMethod = '';
+            
+            if (tookService === 'yes') {
+                services = Array.from(document.querySelectorAll('input[name="service"]:checked'))
+                    .map(cb => cb.value);
+                
+                amount = parseFloat(document.getElementById('amount').value || 0);
+                entryType = document.querySelector('input[name="entryType"]:checked')?.value;
+                paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
+                
+                if (services.length === 0) {
+                    alert('Please select at least one service');
+                    return;
+                }
+                
+                if (!amount || amount <= 0) {
+                    alert('Please enter the amount paid');
+                    return;
+                }
+                
+                if (!entryType) {
+                    alert('Please select Entry Type (Manual/Zenoti)');
+                    return;
+                }
+                
+                if (!paymentMethod) {
+                    alert('Please select Payment Method');
+                    return;
+                }
+            } else {
+                query = document.getElementById('queryDetails').value.trim();
+                if (!query) {
+                    alert('Please enter query details');
+                    return;
+                }
+            }
+            
+            const entry = {
+                id: Date.now(),
+                timestamp: new Date().toLocaleString('en-IN'),
+                name: name,
+                contact: contact,
+                gender: gender,
+                source: source,
+                tookService: tookService === 'yes',
+                services: services,
+                query: query,
+                amount: amount,
+                entryType: entryType,
+                paymentMethod: paymentMethod,
+                locality: locality
+            };
+            
+            entries.unshift(entry);
+            localStorage.setItem('salonEntries', JSON.stringify(entries));
+            
+            sendToGoogleSheets(entry).then(result => {
+                if (result.success) {
+                    console.log('✓ Synced to Google Sheets');
+                } else {
+                    console.warn('⚠ Not synced to Google Sheets:', result.message);
+                }
+            });
+            
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = '✓ Customer entry added successfully!';
+            successMsg.classList.add('show');
+            setTimeout(() => successMsg.classList.remove('show'), 3000);
+            
+            document.getElementById('customerForm').reset();
+            document.getElementById('servicesSection').style.display = 'none';
+            document.getElementById('querySection').style.display = 'none';
+            document.getElementById('amountSection').style.display = 'none';
+            document.getElementById('otherSourceGroup').style.display = 'none';
+            document.getElementById('entryTypeSection').style.display = 'none';
+            document.getElementById('paymentMethodSection').style.display = 'none';
+            
+            updateStats();
+            renderEntries();
+        });
+
+        // Update statistics
+        function updateStats() {
+            const today = new Date().toDateString();
+            const todayEntries = entries.filter(e => new Date(e.timestamp).toDateString() === today);
+            const todayServed = todayEntries.filter(e => e.tookService);
+            const todayRevenue = todayServed.reduce((sum, e) => sum + e.amount, 0);
+            
+            const totalServed = entries.filter(e => e.tookService);
+            
+            document.getElementById('todayTotalCustomers').textContent = todayEntries.length;
+            document.getElementById('todayServedCustomers').textContent = todayServed.length;
+            document.getElementById('todayRevenue').textContent = '₹' + todayRevenue.toLocaleString('en-IN');
+            document.getElementById('totalCustomers').textContent = entries.length;
+            document.getElementById('totalServedCustomers').textContent = totalServed.length;
+            document.getElementById('entriesCount').textContent = entries.length;
+            
+            document.getElementById('exportBtn').disabled = entries.length === 0;
+        }
+
+        // Render entries table
+        function renderEntries() {
+            const container = document.getElementById('entriesTable');
+            
+            // Check if there are any entries at all
+            if (entries.length === 0) {
+                container.innerHTML = '<div class="empty-state">No entries yet. Add your first customer above!</div>';
+                document.getElementById('entriesCount').textContent = '0';
+                return;
+            }
+            
+            // Apply filters
+            filteredEntries = entries.filter(entry => {
+                for (let column in activeFilters) {
+                    const filterSet = activeFilters[column];
+                    
+                    // Skip if this column's filter is explicitly deleted (undefined)
+                    if (filterSet === undefined) {
+                        continue;
+                    }
+                    
+                    // If filter exists but is empty, it means no entries match - show nothing
+                    if (filterSet.size === 0) {
+                        return false;
+                    }
+                    
+                    let value = getColumnValue(entry, column);
+                    if (!filterSet.has(value)) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            
+            console.log('Total entries:', entries.length);
+            console.log('Filtered entries:', filteredEntries.length);
+            console.log('Active filters:', activeFilters);
+            
+            // Update the entries count in the header
+            document.getElementById('entriesCount').textContent = filteredEntries.length;
+            
+            const columns = [
+                { key: 'time', label: 'Time', filterable: true, filterType: 'date' },
+                { key: 'name', label: 'Name', filterable: false },
+                { key: 'contact', label: 'Contact', filterable: false },
+                { key: 'gender', label: 'Gender', filterable: false },
+                { key: 'source', label: 'Source', filterable: false },
+                { key: 'type', label: 'Type', filterable: true, filterType: 'checkbox' },
+                { key: 'entryType', label: 'Entry Type', filterable: false },
+                { key: 'payment', label: 'Payment', filterable: false },
+                { key: 'services', label: 'Services/Query', filterable: false },
+                { key: 'amount', label: 'Amount', filterable: false },
+                { key: 'locality', label: 'Locality', filterable: false },
+                { key: 'action', label: 'Action', filterable: false }
+            ];
+            
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+            `;
+            
+            columns.forEach(col => {
+                const hasFilter = activeFilters[col.key] && activeFilters[col.key].size > 0;
+                const filterIcon = hasFilter ? '🔽' : '▼';
+                const clickable = col.filterable ? `onclick="toggleFilter('${col.key}', '${col.filterType}', event)"` : '';
+                const cursorStyle = col.filterable ? '' : 'cursor: default;';
+                html += `<th ${clickable} style="${cursorStyle}">${col.label}${col.filterable ? ` <span class="filter-icon">${filterIcon}</span>` : ''}</th>`;
+            });
+            
+            html += `
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            if (filteredEntries.length === 0) {
+                // Show empty row with message spanning all columns
+                html += `
+                    <tr>
+                        <td colspan="${columns.length}" style="text-align: center; padding: 40px; color: #666666;">
+                            No entries match the current filters.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                // Show actual entries
+                filteredEntries.forEach(entry => {
+                const date = new Date(entry.timestamp);
+                const timeStr = date.toLocaleString('en-IN', {
+                    day: '2-digit',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const typeCell = entry.tookService 
+                    ? '<span class="served-badge">Served</span>' 
+                    : '<span class="query-badge">Query</span>';
+                
+                const entryTypeCell = entry.tookService && entry.entryType 
+                    ? entry.entryType 
+                    : '-';
+                
+                const paymentCell = entry.tookService && entry.paymentMethod 
+                    ? entry.paymentMethod 
+                    : '-';
+                
+                const servicesCell = entry.tookService 
+                    ? entry.services.join(', ') 
+                    : entry.query;
+                
+                const amountCell = entry.tookService 
+                    ? `<span style="font-weight: 600; color: #d4af37;">₹${entry.amount}</span>`
+                    : '-';
+                
+                const localityCell = entry.locality || '-';
+                
+                html += `
+                    <tr>
+                        <td>${timeStr}</td>
+                        <td style="font-weight: 500;">${entry.name}</td>
+                        <td>${entry.contact}</td>
+                        <td>${entry.gender || '-'}</td>
+                        <td>${entry.source}</td>
+                        <td>${typeCell}</td>
+                        <td>${entryTypeCell}</td>
+                        <td>${paymentCell}</td>
+                        <td style="max-width: 250px;">${servicesCell}</td>
+                        <td>${amountCell}</td>
+                        <td>${localityCell}</td>
+                        <td>
+                            <button class="btn-delete" onclick="deleteEntry(${entry.id})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            }
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+        
+        // Get column value for filtering
+        function getColumnValue(entry, column) {
+            switch(column) {
+                case 'time':
+                    return new Date(entry.timestamp).toLocaleDateString('en-IN');
+                case 'name':
+                    return entry.name;
+                case 'contact':
+                    return entry.contact;
+                case 'gender':
+                    return entry.gender || '-';
+                case 'source':
+                    return entry.source;
+                case 'type':
+                    return entry.tookService ? 'Served' : 'Query';
+                case 'entryType':
+                    return entry.tookService && entry.entryType ? entry.entryType : '-';
+                case 'payment':
+                    return entry.tookService && entry.paymentMethod ? entry.paymentMethod : '-';
+                case 'services':
+                    return entry.tookService ? entry.services.join(', ') : entry.query;
+                case 'amount':
+                    return entry.tookService ? entry.amount.toString() : '-';
+                case 'locality':
+                    return entry.locality || '-';
+                default:
+                    return '';
+            }
+        }
+        
+        // Toggle filter dropdown
+        function toggleFilter(column, filterType, event) {
+            event.stopPropagation();
+            
+            // Close any open dropdowns
+            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                if (dropdown.getAttribute('data-column') !== column) {
+                    dropdown.remove();
+                }
+            });
+            
+            // Check if dropdown already exists
+            const existingDropdown = document.querySelector(`.filter-dropdown[data-column="${column}"]`);
+            if (existingDropdown) {
+                existingDropdown.remove();
+                return;
+            }
+            
+            // Create dropdown
+            const dropdown = document.createElement('div');
+            dropdown.className = 'filter-dropdown show';
+            dropdown.setAttribute('data-column', column);
+            dropdown.onclick = (e) => e.stopPropagation();
+            
+            // Initialize filter set if not exists
+            if (!activeFilters[column]) {
+                activeFilters[column] = new Set();
+            }
+            
+            let html = '';
+            
+            if (filterType === 'date') {
+                // Date preset filter
+                html = `
+                    <div class="filter-option" onclick="applyDateFilter('${column}', 'today')">
+                        <span>Today</span>
+                    </div>
+                    <div class="filter-option" onclick="applyDateFilter('${column}', 'yesterday')">
+                        <span>Yesterday</span>
+                    </div>
+                    <div class="filter-option" onclick="applyDateFilter('${column}', 'last7days')">
+                        <span>Last 7 days</span>
+                    </div>
+                    <div class="filter-option" onclick="applyDateFilter('${column}', 'last30days')">
+                        <span>Last 30 days</span>
+                    </div>
+                    <div class="filter-option" onclick="applyDateFilter('${column}', 'thismonth')">
+                        <span>This Month</span>
+                    </div>
+                    <div class="filter-actions">
+                        <button class="filter-btn" onclick="clearFilter('${column}')">Clear</button>
+                    </div>
+                `;
+            } else {
+                // Get unique values for this column
+                const uniqueValues = new Set();
+                entries.forEach(entry => {
+                    uniqueValues.add(getColumnValue(entry, column));
+                });
+                
+                if (filterType === 'search') {
+                    // Search + checkbox filter
+                    html += `<input type="text" class="filter-search" placeholder="Search..." onkeyup="filterSearchOptions(this, '${column}')">`;
+                }
+                
+                html += `<div class="filter-options-container" id="filter-options-${column}">`;
+                
+                // Check if this column has never been filtered (not in activeFilters or doesn't exist in object)
+                const hasExistingFilter = activeFilters.hasOwnProperty(column) && activeFilters[column] instanceof Set && activeFilters[column].size > 0;
+                
+                Array.from(uniqueValues).sort().forEach(value => {
+                    // If no existing filter for this column, check all by default
+                    // If existing filter, only check if value is in the filter
+                    const isChecked = !hasExistingFilter || activeFilters[column].has(value);
+                    html += `
+                        <div class="filter-option" data-value="${value}">
+                            <input type="checkbox" 
+                                   id="filter_${column}_${value.replace(/[^a-zA-Z0-9]/g, '_')}" 
+                                   ${isChecked ? 'checked' : ''} 
+                                   onchange="updateFilter('${column}', '${value.replace(/'/g, "\\'")}', this.checked)">
+                            <label for="filter_${column}_${value.replace(/[^a-zA-Z0-9]/g, '_')}">${value}</label>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+                
+                html += `
+                    <div class="filter-actions">
+                        <button class="filter-btn" onclick="clearFilter('${column}')">Clear</button>
+                        <button class="filter-btn" onclick="applyFilter('${column}')">Apply</button>
+                    </div>
+                `;
+            }
+            
+            dropdown.innerHTML = html;
+            
+            // Position dropdown
+            const th = event.target.closest('th');
+            th.style.position = 'relative';
+            th.appendChild(dropdown);
+        }
+        
+        // Filter search options
+        function filterSearchOptions(input, column) {
+            const searchTerm = input.value.toLowerCase();
+            const container = document.getElementById(`filter-options-${column}`);
+            const options = container.querySelectorAll('.filter-option');
+            
+            options.forEach(option => {
+                const value = option.getAttribute('data-value').toLowerCase();
+                if (value.includes(searchTerm)) {
+                    option.style.display = 'flex';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+        
+        // Apply date filter
+        function applyDateFilter(column, preset) {
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            let startDate, endDate;
+            
+            switch(preset) {
+                case 'today':
+                    startDate = today;
+                    endDate = new Date(today.getTime() + 86400000); // +1 day
+                    break;
+                case 'yesterday':
+                    startDate = new Date(today.getTime() - 86400000); // -1 day
+                    endDate = today;
+                    break;
+                case 'last7days':
+                    startDate = new Date(today.getTime() - 7 * 86400000); // -7 days
+                    endDate = new Date(today.getTime() + 86400000); // +1 day
+                    break;
+                case 'last30days':
+                    startDate = new Date(today.getTime() - 30 * 86400000); // -30 days
+                    endDate = new Date(today.getTime() + 86400000); // +1 day
+                    break;
+                case 'thismonth':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                    break;
+            }
+            
+            console.log(`Date filter: ${preset}`);
+            console.log('Start date:', startDate);
+            console.log('End date:', endDate);
+            
+            // Filter entries by date range
+            const validDates = new Set();
+            entries.forEach(entry => {
+                const entryDate = new Date(entry.timestamp);
+                console.log('Entry date:', entryDate, 'in range?', entryDate >= startDate && entryDate < endDate);
+                if (entryDate >= startDate && entryDate < endDate) {
+                    validDates.add(getColumnValue(entry, column));
+                }
+            });
+            
+            console.log('Valid dates found:', validDates);
+            
+            // Apply filter even if empty - will show empty table with headers
+            activeFilters[column] = validDates;
+            
+            // Close dropdown
+            const dropdown = document.querySelector(`.filter-dropdown[data-column="${column}"]`);
+            if (dropdown) dropdown.remove();
+            
+            renderEntries();
+        }
+        
+        // Update filter selection
+        function updateFilter(column, value, checked) {
+            if (!activeFilters[column]) {
+                activeFilters[column] = new Set();
+            }
+            
+            if (checked) {
+                activeFilters[column].add(value);
+            } else {
+                activeFilters[column].delete(value);
+            }
+            
+            console.log(`Filter updated: ${column} = ${value} (${checked})`);
+            console.log('Active filters:', activeFilters);
+        }
+        
+        // Apply filter
+        function applyFilter(column) {
+            // Get all checked values
+            const checkedValues = new Set();
+            const checkboxes = document.querySelectorAll(`.filter-dropdown[data-column="${column}"] input[type="checkbox"]:checked`);
+            checkboxes.forEach(cb => {
+                // Extract value from the onchange attribute
+                const onchangeAttr = cb.getAttribute('onchange');
+                const match = onchangeAttr.match(/updateFilter\('.*?', '(.*?)',/);
+                if (match) {
+                    checkedValues.add(match[1].replace(/\\'/g, "'"));
+                }
+            });
+            
+            // Update the filter
+            activeFilters[column] = checkedValues;
+            
+            console.log(`Applied filter for ${column}:`, checkedValues);
+            
+            // Close dropdown
+            const dropdown = document.querySelector(`.filter-dropdown[data-column="${column}"]`);
+            if (dropdown) dropdown.remove();
+            
+            renderEntries();
+        }
+        
+        // Clear filter
+        function clearFilter(column) {
+            // Remove this column's filter completely
+            delete activeFilters[column];
+            
+            // Close dropdown
+            const dropdown = document.querySelector(`.filter-dropdown[data-column="${column}"]`);
+            if (dropdown) dropdown.remove();
+            
+            renderEntries();
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.filter-dropdown').forEach(dropdown => {
+                dropdown.remove();
+            });
+        });
+
+        // Delete entry
+        function deleteEntry(id) {
+            if (confirm('Delete this entry?')) {
+                entries = entries.filter(e => e.id !== id);
+                localStorage.setItem('salonEntries', JSON.stringify(entries));
+                updateStats();
+                renderEntries();
+            }
+        }
+
+        // Export CSV
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const headers = ['Timestamp', 'Name', 'Contact', 'Gender', 'Source', 'Type', 'Entry Type', 'Payment Method', 'Services/Query', 'Amount', 'Locality'];
+            const rows = entries.map(entry => [
+                new Date(entry.timestamp).toLocaleString('en-IN'),
+                entry.name,
+                entry.contact,
+                entry.gender || '',
+                entry.source,
+                entry.tookService ? 'Served' : 'Query',
+                entry.tookService ? (entry.entryType || '') : '',
+                entry.tookService ? (entry.paymentMethod || '') : '',
+                entry.tookService ? entry.services.join('; ') : entry.query,
+                entry.tookService ? entry.amount : 0,
+                entry.locality || ''
+            ]);
+            
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+            
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `salon-data-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        });
+    </script>
+</body>
+</html>
